@@ -1,4 +1,6 @@
 using System;
+using AppPrismSurvey.View;
+using Prism.Ioc;
 using Prism.Unity;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -12,19 +14,24 @@ namespace AppPrismSurvey
         public App()
         {
             InitializeComponent();
-
-			MainPage = new NavigationPage(new MainPage());
+            MainPage = new NavigationPage(new SurveysView());
         }
 
-		protected override void OnInitialized()
-		{
-			throw new System.NotImplementedException();
-		}
-		protected  override void RegisterTypes()
-		{
-			throw new System.NotImplementedException();
-		}
+        protected override void RegisterTypes(IContainerRegistry containerRegistry)
+        {
+            //containerRegistry.RegisterForNavigation<NavigationPage>();
+            containerRegistry.RegisterForNavigation<SurveysView>();
+            containerRegistry.RegisterForNavigation<SurveyDetailsView>();
+        }
 
-       
+        protected override async void OnInitialized()
+        {
+
+
+            //await NavigationService.NavigateAsync("NavigationPage/MainPage"); 
+            await NavigationService.NavigateAsync($"{nameof(RootNavigationView)} / {nameof(SurveysView)}");
+        }
+
+
     }
 }
